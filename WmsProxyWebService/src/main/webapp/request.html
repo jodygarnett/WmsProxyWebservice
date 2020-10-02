@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<html> 
+  <head> 
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+    <meta http-equiv="X-UA-Compatible" content="IE=7,IE=9" />   
+   <!--The viewport meta tag is used to improve the presentation and behavior of the samples 
+      on iOS devices-->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+    <title>Map with WMS</title> 
+    <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.2/js/dojo/dijit/themes/claro/claro.css"> 
+    <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.2/js/esri/css/esri.css" />
+    
+    <style> 
+      html, body { 
+      		height: 98%; 
+      		width: 98%; 
+      		margin: 0; 
+      		padding: 5px; 
+      }
+      #rightPane{
+        	border:none;
+        	width:300px;
+			overflow: auto !important;
+      }
+      
+    </style> 
+    <script type="text/javascript">var djConfig = {parseOnLoad: true};</script> 
+    <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=3.2"></script> 
+ 
+ <script type="text/javascript"> 
+ 
+	var visible = [];
+	var wmsLayer;
+	
+    function showCoordinates(evt) {
+		var mp = evt.mapPoint;
+		if ( mp ) {
+			//display mouse coordinates
+			dojo.byId("info").innerHTML = mp.x + ", " + mp.y + " : " +map.extent.xmin + "," + map.extent.ymin + "," + map.extent.xmax + "," + map.extent.ymax;
+		}	
+      }
+    
+	function buildLayerList(lyr) {
+
+		var layersList = dojo.byId("layersList");
+		var layersListOptions = dojo.byId("layersList").options;
+		layersList.innerHTML = "";
+		var idx = 0;
+
+		for (i = 0; i < lyr.layerInfos.length; i++) {
+			var layer = lyr.layerInfos[i];
+			if ( layer.subLayers && layer.subLayers.length > 0) {
+				var subLayers = layer.subLayers;
+				for (j = 0; j < subLayers.length; j++) {
+					var subLayer = subLayers[j];
+					var opt = document.createElement("option");
+					layersListOptions.add(opt);
+					opt.text = subLayer.title;
+					opt.value = subLayer.name; //idx++;
+				}
+			}
+			else {
+				var opt = document.createElement("option");
+				layersListOptions.add(opt);
+				opt.text = layer.title;
+				opt.value = layer.name; //idx++;
+			}
+		}
+
+	}
+	
+	function newLayer() {
+		var layersList = dojo.byId("layersList");
+		var myindex  = layersList.selectedIndex;
+		var SelValue = layersList.options[myindex].value;
+		var SelText = layersList.options[myindex].text;
+		//alert(myindex + SelValue + SelText);
+
+		visible = [];
+		visible.push(SelValue);
+
+		//alert(SelValue);
+		dojo.byId('layerName').value = SelValue + " - " + SelText;
+
+		//console.log(visible);
+		wmsLayer.setVisibleLayers(visible);
+
+		return true;
+	}
+    </script> 
+    
+    <script type="text/javascript"> 
+      dojo.require("dijit.layout.BorderContainer");
+      dojo.require("dijit.layout.ContentPane");
+      dojo.require("dijit.layout.AccordionContainer");
+      dojo.require("dijit.form.Form");
+      dojo.require("dijit.form.TextBox");
+      dojo.require("dijit.form.Button");
+      dojo.require("esri.map");
+      dojo.require("esri.layers.wms");
+      
+      var map;
+
+      function init() {
+        //Used to be this URL ... esri.config.defaults.io.proxyUrl = "/arcgisserver/apis/javascript/proxy/proxy.ashx";
+        // Try our ...
+        //esri.config.defaults.io.proxyUrl = "what"; //"ws/wmsproxy/executeFromProxy?remoteService="; 
+        var initExtent = new esri.geometry.Extent({"xmin":-20282106,"ymin":2211169,"xmax":-1242560,"ymax":12660417,"spatialReference":{"wkid":102100}});
+        map = new esri.Map("map",{extent:initExtent});
+        var basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer");
+        map.addLayer(basemap);
+       
+//http://help.arcgis.com/arcgisserver/apis/javascript/proxy/proxy.ashx?http://sampleserver1.arcgisonline.com/ArcGIS/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer/WMSServer?SERVICE=WMS&REQUEST=GetCapabilities
+  
+        dojo.connect(map, 'onLoad', function(theMap) {
+          //resize the map when the browser resizes
+          dojo.connect(dijit.byId('map'), 'resize', map,map.resize);
+          
+          dojo.connect(dijit.byId('map'), 'onMouseMove', showCoordinates);
+          
+          dojo.connect(dijit.byId('addLayersButton'), 'onClick', function () {
+        	  
+        	  if ( wmsLayer ) {
+        		  map.removeLayer(wmsLayer);
+        	  }
+        	  var remoteService = dijit.byId('remoteService').value;
+        	  var version = dijit.byId('version').value;
+        	  var service = dijit.byId('service').value;
+        	  var request = dijit.byId('request').value;
+        	  
+        	  var url = "ws/wmsproxy/executeFromProxy?remoteService=" + remoteService + "&version=" + version + "&service=" + service + "&request=" + request;
+        	  wmsLayer = new esri.layers.WMSLayer(url); 
+              
+              //var wmsLayer = new esri.layers.WMSLayer("http://sampleserver1.arcgisonline.com/ArcGIS/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer/WMSServer"); 
+              //set visible layers - in this case US Cities
+              wmsLayer.setVisibleLayers([0]);  
+              wmsLayer.setImageFormat("png");
+              map.addLayer(wmsLayer);
+              
+              if ( wmsLayer.loaded ) {
+      			buildLayerList(wmsLayer);
+              } else {
+      			dojo.connect(wmsLayer, "onLoad", buildLayerList);
+              }
+              
+           });
+          
+        });
+      }
+
+
+
+      dojo.addOnLoad(init);
+      
+    </script> 
+  </head> 
+  
+  <body class="claro"> 
+    <div id="content" dojotype="dijit.layout.BorderContainer" design="headline" gutters="true" style="width: 100%; height: 100%; margin: 0;"> 
+      <div id="map" dojotype="dijit.layout.ContentPane" region="center" style="overflow:hidden;"> 
+      </div> 
+      <!-- Right Sidebar Section-->
+      <div data-dojo-type="dijit.layout.ContentPane" id="rightPane" class="pane" data-dojo-props="region:'right'">
+      	 <!--  encType="application/x-www-form-urlencoded" encType="multipart/form-data" -->
+      	 <div data-dojo-type="dijit.form.Form" id="myForm" data-dojo-id="myForm"
+									encType="application/x-www-form-urlencoded" action="ws/wmsproxy/executeFromProxy" method="POST">
+		  <table style="border: 1px solid #9f9f9f;" cellspacing="10">
+	        <tr>
+	            <td>
+	            	<label for="remoteService">WMS URL:</label>
+	            </td>
+	        </tr>
+	        <tr>
+	            <td>
+	            	<input type="text" id="remoteService" name="remoteService" required="true" style="width:500px;" data-dojo-type="dijit.form.TextBox" value="http://sampleserver1.arcgisonline.com/ArcGIS/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer/WMSServer"/>
+	            </td>
+	        </tr>
+	        <tr>
+	            <td>
+	            	<label for="version">Version</label>
+	            	<input type="text" id="version" name="version" required="true" data-dojo-type="dijit.form.TextBox" value="1.3.0"/>
+	            </td>
+	        </tr>	
+	        <tr>
+	            <td>
+	            	<label for="service">Service</label>
+	            	<input type="text" id="service" name="service" required="true" data-dojo-type="dijit.form.TextBox" value="wms"/>
+	            </td>
+	        </tr>	 
+	        <tr>
+	            <td>
+	            	<label for="request">Request</label>
+	            	<input type="text" id="request" name="request" required="true" data-dojo-type="dijit.form.TextBox" value="GetCapabilities"/>
+	            </td>
+	        </tr>	
+	        <!--
+	        <tr>
+	            <td>
+	            	<label for="sld_body">sld_body</label>
+	            	<input type="text" id="sld_body" name="sld_body" data-dojo-type="dijit.form.TextBox" value="<sld:StyledLayerDescriptor version='1.0.0'>"/>
+	            </td>
+	        </tr>	
+	          -->
+	        <tr>
+				<td>
+					Layer List : <span></span><select id="layersList" onchange='newLayer();'></select><input type="text" style="width:200px;" id="layerName" value="0" /><br />
+				</td>
+			</tr>
+	        <tr>
+	            <td>
+	            	<button id="addLayersButton" data-dojo-type="dijit.form.Button" type="button">Add Layers
+	            	</button>
+	            	<!--  
+	            	<input id="postit" name="posit" type="submit" value="post"/> 
+	            	 -->
+	            </td>
+	        </tr>
+	        
+		  </table> 
+		 </div>
+      </div>
+      <!-- Footer Section-->
+	  <div id="footer" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region:'bottom'">
+	     <span id="infoAgs" style="font-size:14px;font-weight:bold;">AAFC’s Agri-Geomatics Services (AGS) - Services de AAC Agrogéomatiques (SAG)  </span><br/>
+	     <span id="info" style="font-size:10px;"></span>
+	  </div>
+    </div> 
+    
+    <div>
+    <form method="get" action="ws/wmsproxy/reloadProperties" target="_blank">
+
+		<p>Reload Server Cache Properties (very useful!):
+			&nbsp; &nbsp;
+			<input type="submit" value="Reload now!" style="font-size: 20px; padding-left:25px;padding-right:25px;"/>
+		</p>
+		
+	</form>
+    </div>
+
+  </body> 
+ 
+</html>

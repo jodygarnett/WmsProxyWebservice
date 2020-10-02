@@ -1,0 +1,14 @@
+<form method="get" action="ws/wmsproxy/executeFromProxy" enctype="application/x-www-form-urlencoded" target="_blank">
+	<table style="border: 1px solid;">
+	<tr>
+	  <th>Parameters Name</th>
+	  <th>Value</th>
+	</tr>
+	<tr>
+	<td>???</td><td>   <input id="radius" width="20" maxlength="20" name="radius"  value="???" /></td>
+	</tr>
+	</table>
+
+	<br/>
+	<input type="submit" value="Submit" style="font-size: 20px;"/>
+</form>
