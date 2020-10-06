@@ -191,7 +191,7 @@ public class JeMafConvertUtils {
 	  *
 	  */
 	public static int objectToInteger(Object value) {
-		int intValue = (int)0;
+		int intValue = 0;
 		try {
 			if ( value instanceof String ) {
 				intValue = java.lang.Integer.parseInt((String)value);

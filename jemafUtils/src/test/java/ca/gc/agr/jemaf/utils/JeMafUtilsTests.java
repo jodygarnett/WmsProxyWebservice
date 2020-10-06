@@ -53,30 +53,30 @@ public class JeMafUtilsTests {
 	public void testLocale() throws Exception {
 		LOGGER.info("Testing Locale in progress...");
 		Locale locale = JeMafUtils.convertLang("asas");
-		Assert.notNull(locale);
-		Assert.isTrue( locale.equals(Locale.ENGLISH ));
+		Assert.notNull(locale,"asas");
+		Assert.isTrue( locale.equals(Locale.ENGLISH ),"asas");
 		
 		locale = JeMafUtils.convertLang("fr");
-		Assert.notNull(locale);
-		Assert.isTrue( locale.equals(Locale.FRENCH ));
+		Assert.notNull(locale,"fr");
+		Assert.isTrue( locale.equals(Locale.FRENCH ),"fr");
 		
 		locale = JeMafUtils.convertLang("FR");
-		Assert.notNull(locale);
-		Assert.isTrue( locale.equals(Locale.FRENCH ));
+		Assert.notNull(locale,"FR");
+		Assert.isTrue( locale.equals(Locale.FRENCH ),"FR");
 		
 		locale = JeMafUtils.convertLang("fRa");
-		Assert.notNull(locale);
-		Assert.isTrue( locale.equals(Locale.FRENCH ));
+		Assert.notNull(locale,"fRa");
+		Assert.isTrue( locale.equals(Locale.FRENCH ),"fRa");
 		
 		locale = JeMafUtils.convertLang(null);
-		Assert.notNull(locale);
-		Assert.isTrue( locale.equals(Locale.ENGLISH ));
+		Assert.notNull(locale,"null");
+		Assert.isTrue( locale.equals(Locale.ENGLISH ),"null");
 		
 		locale = JeMafUtils.convertLang("");
-		Assert.notNull(locale);
-		Assert.isTrue( locale.equals(Locale.ENGLISH ));
+		Assert.notNull(locale,"empty string");
+		Assert.isTrue( locale.equals(Locale.ENGLISH ),"empty string");
 		
-		Assert.notNull( JeMafUtils.getCurrentDateTime() );
+		Assert.notNull( JeMafUtils.getCurrentDateTime(),"current date time" );
 		
 		LOGGER.info("Testing done");
 	}
@@ -86,61 +86,61 @@ public class JeMafUtilsTests {
 		LOGGER.info("Testing Math in progress...");
 		
 		double result =  JeMafMathUtils.round(10.123456, 0);
-		Assert.isTrue( result == 10.0 );
+		Assert.isTrue( result == 10.0,"" );
 		
 		result =  JeMafMathUtils.round(10.123456, 1);
-		Assert.isTrue( result == 10.1 );
+		Assert.isTrue( result == 10.1,"" );
 		
 		result =  JeMafMathUtils.round(10.123456, 2);
-		Assert.isTrue( result == 10.12 );
+		Assert.isTrue( result == 10.12,"" );
 		
 		result =  JeMafMathUtils.round(10.123456, 3);
-		Assert.isTrue( result == 10.123 );
+		Assert.isTrue( result == 10.123,"" );
 		
 		result =  JeMafMathUtils.round(10.123456, 4);
-		Assert.isTrue( result != 10.1234 );
-		Assert.isTrue( result == 10.1235 );
+		Assert.isTrue( result != 10.1234,"" );
+		Assert.isTrue( result == 10.1235,"" );
 		
 		result =  JeMafMathUtils.round(10.123456, 5);
-		Assert.isTrue( result != 10.12345 );
-		Assert.isTrue( result == 10.12346 );
+		Assert.isTrue( result != 10.12345,"" );
+		Assert.isTrue( result == 10.12346,"" );
 
 		result =  JeMafMathUtils.round(10.1234567, 6);
-		Assert.isTrue( result != 10.123456 );
-		Assert.isTrue( result == 10.123457 );
+		Assert.isTrue( result != 10.123456,"" );
+		Assert.isTrue( result == 10.123457,"" );
 		
 		result =  JeMafMathUtils.round(10.1234567890, 8);
-		Assert.isTrue( result != 10.12345678 );
-		Assert.isTrue( result == 10.12345679 );
+		Assert.isTrue( result != 10.12345678,"" );
+		Assert.isTrue( result == 10.12345679,"" );
 		
 		
 		result =  JeMafMathUtils.round(10.123456, 0, false);
-		Assert.isTrue( result == 10.0 );
+		Assert.isTrue( result == 10.0,"" );
 		
 		result =  JeMafMathUtils.round(10.123456, 1, false);
-		Assert.isTrue( result == 10.1 );
+		Assert.isTrue( result == 10.1,"" );
 		
 		result =  JeMafMathUtils.round(10.123456, 2, false);
-		Assert.isTrue( result == 10.12 );
+		Assert.isTrue( result == 10.12,"" );
 		
 		result =  JeMafMathUtils.round(10.123456, 3, false);
-		Assert.isTrue( result == 10.123 );
+		Assert.isTrue( result == 10.123,"" );
 		
 		result =  JeMafMathUtils.round(10.123456, 4, false);
-		Assert.isTrue( result != 10.1235 );
-		Assert.isTrue( result == 10.1234 );
+		Assert.isTrue( result != 10.1235,"" );
+		Assert.isTrue( result == 10.1234,"" );
 		
 		result =  JeMafMathUtils.round(10.123456, 5, false);
-		Assert.isTrue( result != 10.12346 );
-		Assert.isTrue( result == 10.12345 );
+		Assert.isTrue( result != 10.12346,"" );
+		Assert.isTrue( result == 10.12345,"" );
 
 		result =  JeMafMathUtils.round(10.1234567, 6, false);
-		Assert.isTrue( result != 10.123457 );
-		Assert.isTrue( result == 10.123456 );
+		Assert.isTrue( result != 10.123457,"" );
+		Assert.isTrue( result == 10.123456,"" );
 		
 		result =  JeMafMathUtils.round(10.1234567890, 8, false);
-		Assert.isTrue( result != 10.12345679 );
-		Assert.isTrue( result == 10.12345678 );
+		Assert.isTrue( result != 10.12345679,"" );
+		Assert.isTrue( result == 10.12345678,"" );
 		
 		LOGGER.info("Testing done");
 	}
@@ -155,7 +155,7 @@ public class JeMafUtilsTests {
 		
 		JeMafIoUtils.writeToFile( filename, text);
 				
-		Assert.isTrue( JeMafIoUtils.readFileAsString(filename, true).toString().equals(text) );
+		Assert.isTrue( JeMafIoUtils.readFileAsString(filename, true).toString().equals(text),"" );
 		
 		
 		final String textNoTab = "\tThis\tis\ta\ttest\n";
@@ -164,7 +164,7 @@ public class JeMafUtilsTests {
 		
 		JeMafIoUtils.writeToFile( filenameNoTab, textNoTab);
 				
-		Assert.isTrue( JeMafIoUtils.readFileAsString(filenameNoTab, false).toString().equals(text) );
+		Assert.isTrue( JeMafIoUtils.readFileAsString(filenameNoTab, false).toString().equals(text),"" );
 		
 		LOGGER.info("Testing done");
 	}
@@ -186,13 +186,13 @@ public class JeMafUtilsTests {
 		
 		JeMafIoUtils.writeToFile( filename, text);
 				
-		Assert.notNull( JeMafDomUtils.parseDoc(filename) );
+		Assert.notNull( JeMafDomUtils.parseDoc(filename),"parseDoc" );
 		
 		Document doc = JeMafDomUtils.parseDoc(filename);
 		
 		Node node = JeMafDomUtils.getFirstNode(doc, rootNode);
 		
-		Assert.notNull( JeMafDomUtils.getTagAttributeByNode(attrName, node, null) );
+		Assert.notNull( JeMafDomUtils.getTagAttributeByNode(attrName, node, null),"getTagAttributeByNode" );
 		
 		Assert.hasText( JeMafDomUtils.getTagAttributeByNode(attrName, node, null), attrNameValue );
 		

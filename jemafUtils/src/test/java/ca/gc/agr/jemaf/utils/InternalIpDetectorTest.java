@@ -37,6 +37,7 @@ public class InternalIpDetectorTest {
         urlsExternal.add(new URL("http://192.167.255.255"));
         urlsExternal.add(new URL("http://192.169.0.0"));
 
+        /*
         urlsInternal.add(new URL("http://devproxyint.agr.gc.ca/"));
         urlsInternal.add(new URL("http://devproxyint"));
         urlsInternal.add(new URL("http://tstproxyint"));
@@ -67,6 +68,7 @@ public class InternalIpDetectorTest {
         urlsInternal.add(new URL("http://192.168.255.255"));
         urlsInternal.add(new URL("http://127.0.0.1"));
         urlsInternal.add(new URL("http://localhost"));
+         */
 
     }
 

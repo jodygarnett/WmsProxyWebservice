@@ -571,11 +571,11 @@ public class Parser implements ParserInterface {
     			// Read the execute request
     			if ( streamMessageBody != null ) {
         			log("UnMarshalling InputStream");
-    				test = (Object)xmlUnmarshaller.unmarshal(streamMessageBody);
+    				test = xmlUnmarshaller.unmarshal(streamMessageBody);
     			}
     			else {
         			log("UnMarshalling URL");
-    				test = (Object)xmlUnmarshaller.unmarshal(urlXMLRequest);
+    				test = xmlUnmarshaller.unmarshal(urlXMLRequest);
     			}
 
     			// If restricted, check whatever errors
@@ -600,7 +600,7 @@ public class Parser implements ParserInterface {
 								"Message:" + "No stream given to unmarshall" );
     	}
 
-    	return (Object)test;
+    	return test;
     }
 
      /**
