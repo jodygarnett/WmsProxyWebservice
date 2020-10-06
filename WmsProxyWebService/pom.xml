@@ -6,14 +6,12 @@
   <artifactId>wmsproxy</artifactId>
   <name>wmsproxy</name>
   <packaging>war</packaging>
-  <version>1.0.1</version>
+  <version>2.0.0</version>
   <description>WMS PROXY RESTful Web Service </description>
   <properties>
-    <java-version>1.6</java-version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <org.springframework-version>5.2.7.RELEASE</org.springframework-version>
-    <org.aspectj-version>1.6.9</org.aspectj-version>
-    <jemaf.version>1.0.5</jemaf.version>
-    <gson.version>2.2.2</gson.version>
+    <jemaf.version>2.0.0</jemaf.version>
   </properties>
   <dependencies>
   
@@ -35,14 +33,6 @@
       <artifactId>spring-webmvc</artifactId>
       <version>${org.springframework-version}</version>
     </dependency>
-    <!-- now included in spring-core -->
-    <!--
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-asm</artifactId>
-      <version>${org.springframework-version}</version>
-    </dependency>
-    -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-expression</artifactId>
@@ -64,9 +54,8 @@
       <version>${org.springframework-version}</version>
     </dependency>
 
-
     <!-- Logging -->
-    <dependency>
+    <!--dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.1.1</version>
@@ -76,14 +65,13 @@
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>1.2.16</version>
-    </dependency>
+    </dependency-->
 
-    <dependency>
+    <!--dependency>
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>
       <version>1.2.2</version>
-    </dependency>
-
+    </dependency-->
 
     <!-- Servlet -->
     <dependency>
@@ -102,6 +90,7 @@
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
       <version>1.2</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Test -->

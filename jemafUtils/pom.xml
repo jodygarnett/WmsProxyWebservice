@@ -6,7 +6,7 @@
   <groupId>ca.gc.agr.jemaf</groupId>
   <artifactId>jemafutils</artifactId>
   <!-- Don't forget to change 'makejar.sh if you change the version number -->
-  <version>1.0.5</version>
+  <version>2.0.0</version>
   <packaging>jar</packaging>
   <name>JeMafUtils</name>
   <url>http://www.agr.gc.ca/</url>
@@ -16,7 +16,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <app.build.name>PrintWebService</app.build.name>
-    <java-version>1.8</java-version>
 
     <!-- App -->
     <commons-fileupload.version>1.2.2</commons-fileupload.version>
@@ -29,7 +28,6 @@
     <log4j.version>1.2.16</log4j.version>
     <org.springframework-version>5.2.7.RELEASE</org.springframework-version>
     <javax.servlet.version>2.5</javax.servlet.version>
-    <servlet-api.version>2.5</servlet-api.version>
   </properties>
 
   <dependencies>
