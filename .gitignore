@@ -9,6 +9,7 @@ hs_err_pid*
 
 # Jetty
 wmsproxy.log
+WmsProxyWebService/wmsproxy.log
 
 # Maven
 target/
