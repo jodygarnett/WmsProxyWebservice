@@ -33,7 +33,7 @@
     <dependency>
       <groupId>ca.gc.agr.jemaf</groupId>
       <artifactId>jemafutils</artifactId>
-      <version>${jemaf.version}</version>
+      <version>${project.version}</version>
     </dependency>
 
     <!-- Spring -->
