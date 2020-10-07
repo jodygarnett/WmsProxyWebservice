@@ -17,10 +17,7 @@ package ca.gc.agr.jemaf.ws.wmsproxy;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
@@ -85,27 +82,27 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 			"WMSPROXY.GENERAL.FAILURE";
 	private static final String WMSPROXY_PAGE_EXCEED = 							// $codepro.audit.disable fieldJavadoc
 			"WMSPROXY.PAGE.EXCEED";
-	private static final String WMSPROXY_MALFORMED_URL = 						// $codepro.audit.disable fieldJavadoc	
+	private static final String WMSPROXY_MALFORMED_URL = 						// $codepro.audit.disable fieldJavadoc
 			"WMSPROXY.MALFORMED.URL";
-	private static final String WMSPROXY_IO_FAILURE = 							// $codepro.audit.disable fieldJavadoc	
+	private static final String WMSPROXY_IO_FAILURE = 							// $codepro.audit.disable fieldJavadoc
 			"WMSPROXY.IO.FAILURE";
-	private static final String WMSPROXY_MANDATORY_PARAMS = 					// $codepro.audit.disable fieldJavadoc		
+	private static final String WMSPROXY_MANDATORY_PARAMS = 					// $codepro.audit.disable fieldJavadoc
 			"WMSPROXY.MANDATORY.PARAMS";
-	private static final String WMSPROXY_TIMEOUT = 								// $codepro.audit.disable fieldJavadoc			
+	private static final String WMSPROXY_TIMEOUT = 								// $codepro.audit.disable fieldJavadoc
 			"WMSPROXY.TIMEOUT";
-	private static final String WMSPROXY_REQUEST_TYPE_VALID = 					// $codepro.audit.disable fieldJavadoc			
-			"WMSPROXY.REQUEST.TYPE.VALID";	
-	private static final String WMSPROXY_INVALID_POST_XML = 					// $codepro.audit.disable fieldJavadoc			
-			"WMSPROXY.INVALID.POST.XML";	
-	private static final String WMSPROXY_INVALID_RESPONSE = 					// $codepro.audit.disable fieldJavadoc			
-			"WMSPROXY.INVALID.RESPONSE";	
+	private static final String WMSPROXY_REQUEST_TYPE_VALID = 					// $codepro.audit.disable fieldJavadoc
+			"WMSPROXY.REQUEST.TYPE.VALID";
+	private static final String WMSPROXY_INVALID_POST_XML = 					// $codepro.audit.disable fieldJavadoc
+			"WMSPROXY.INVALID.POST.XML";
+	private static final String WMSPROXY_INVALID_RESPONSE = 					// $codepro.audit.disable fieldJavadoc
+			"WMSPROXY.INVALID.RESPONSE";
 
 
 	/** class variables =========================================================================
 	 */
 	private Integer payload = 1000;
 	private Integer timeout = 30000;
-	
+
 	/** instance variables ======================================================================
 	 */
 
@@ -114,7 +111,7 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 	 */
 	@Autowired
 	private GlobalEnvironmentPropertiesController globalEnvironmentPropertiesController;
-	
+
 	/**
 	 * Spring will "auto-inject" a Singleton ReloadableResourceBundleMessageSource Object to this variable
 	 * to get messages properties in english and french in a commun way
@@ -156,7 +153,7 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 			GlobalEnvironmentPropertiesController globalEnvironmentPropertiesController) {
 		this.globalEnvironmentPropertiesController = globalEnvironmentPropertiesController;
 	}
-	
+
 	/**
 	 * RESTful HTTP GET/POST '/reloadProperties' Web Service
 	 * It allows to realod server side properties setup under Web Logic
@@ -172,9 +169,9 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 	public @ResponseBody()  void  reloadproperties(
 			HttpServletRequest  request,
 			HttpServletResponse response) throws NoSuchMessageException, IOException {
-		
+
 		getGlobalEnvironmentPropertiesController().load();
-		
+
 		LOGGER.warn("The properties have been reloaded");
 		response.setContentType(JeMafUtils.JSON_UTF_RESPONSE_CONTENT);
 		ErrorResponse errResponse = new ErrorResponse();
@@ -182,8 +179,8 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 		errResponse.setMessage("The properties have been reloaded");
 		response.getWriter().write( ErrorResponse.serializeObjectToPrettyJsonString( errResponse ) );
 	}
-	
-	
+
+
 	/**
 	 * Method that sets the Web Servlet Application Context
 	 *
@@ -238,7 +235,7 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 		this.timeout = timeout;
 	}
 
-	
+
 	/** methods =================================================================================
 	 */
 
@@ -264,7 +261,7 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 			HttpServletRequest  request,
 			HttpServletResponse response) throws NoSuchMessageException, IOException {
 
-		//http://atlas.agr.gc.ca/agmafWSWmsProxy/rest/wmsproxy?remoteService=http://atlas.gc.ca/cgi-bin/atlaswms_en&version=1.1.1&service=wms&request=GetStyles&layers=wld_ocean&_dc=1353352206677		
+		//http://atlas.agr.gc.ca/agmafWSWmsProxy/rest/wmsproxy?remoteService=http://atlas.gc.ca/cgi-bin/atlaswms_en&version=1.1.1&service=wms&request=GetStyles&layers=wld_ocean&_dc=1353352206677
 		// ?remoteService=http://atlas.agr.gc.ca/nrh-szrn-mb_wms/tilecache.py&VERSION=1.1.1&TITLE=AgriMap%20-%20Manitoba&FORMAT=image%2Fpng&TRANSPARENT=false&LAYERS=nrh-szrn-mb_wms!BathymetryForeignLand&SERVICE=WMS&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A26914&BBOX=3009331.8702899,6764665.935145,3686664.8378624,7441998.9027174&WIDTH=256&HEIGHT=256
 
 		//http://atlas.agr.gc.ca/nrh-szrn-mb_wms/tilecache.py?VERSION=1.1.1&TITLE=AgriMap%20-%20Manitoba&FORMAT=image%2Fpng&TRANSPARENT=false&LAYERS=nrh-szrn-mb_wms!BathymetryForeignLand&SERVICE=WMS&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&SRS=EPSG%3A26914&BBOX=3009331.8702899,6764665.935145,3686664.8378624,7441998.9027174&WIDTH=256&HEIGHT=256
@@ -275,12 +272,12 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 		//http://atlas.agr.gc.ca/agmafWSWmsProxy/rest/wmsproxy?remoteService=%20http://atlas.gc.ca/cgi-bin/atlaswms_en&version=1.1.1&request=GetCapabilities&service=wms&_dc=1353007416619
 		//http://atlas.agr.gc.ca/agmafWSWmsProxy/rest/wmsproxy?remoteService=%20http://atlas.gc.ca/cgi-bin/atlaswms_en&version=1.1.1&service=wms&request=GetStyles&layers=wld_ocean&_dc=1353007289697
 
-		//http://atlas.agr.gc.ca/agmafWSWmsProxy/rest/wmsproxy?remoteService=http://atlas.gc.ca/cgi-bin/atlaswms_en&version=1.1.1&service=wms&request=GetStyles&layers=can_1m_ocean,can_1m_provterr,can_1m_roc,can_1m_mountain,can_1m_freshwat,can_1m_glac,can_1m_protect,can_1m_atl_oceandr,can_1m_env_majordr,can_1m_env_subdr,can_1m_env_s_subdr&_dc=1353067513212	
+		//http://atlas.agr.gc.ca/agmafWSWmsProxy/rest/wmsproxy?remoteService=http://atlas.gc.ca/cgi-bin/atlaswms_en&version=1.1.1&service=wms&request=GetStyles&layers=can_1m_ocean,can_1m_provterr,can_1m_roc,can_1m_mountain,can_1m_freshwat,can_1m_glac,can_1m_protect,can_1m_atl_oceandr,can_1m_env_majordr,can_1m_env_subdr,can_1m_env_s_subdr&_dc=1353067513212
 
 		//http://localhost:8080/WmsProxyWebService/ws/wmsproxy/executeFromProxy?remoteService=http://sampleserver1.arcgisonline.com/ArcGIS/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer/WMSServer/&version=1.1.1&request=GetCapabilities&service=wms&_dc=1353007416619
 		//ws/wmsproxy/executeFromProxy?remoteService=http://sampleserver1.arcgisonline.com/ArcGIS/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer/WMSServer&version=1.3.0&service=wms&request=GetCapabilities
 
-		
+
 		URLResponse wmsResponse = executeExternalProxyRequest(request);
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.setContentType(wmsResponse.getContentType());
@@ -291,7 +288,7 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 	public URLResponse executeExternalProxyRequest(HttpServletRequest  request) throws NoSuchMessageException, IOException {
 
 		URLResponse wmsResponse = null;
-		
+
 		String remoteService = "";
 		String requestType = "GetCapabilities";
 		String service = "wms";
@@ -299,18 +296,60 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 		Locale locale = Locale.ENGLISH;
 		String msgKey = null;
 		Object params[] = null;
-		
+
 		try {
 			// Reformulate the query
 			StringBuilder sb = new StringBuilder();
 			String requestPostData = JeMafHttpUtils.getPostData(request, getPayload() );
 			String requestMethod = JeMafHttpUtils.getMethod(request);
-			String requestContentType = JeMafHttpUtils.getContentType(request);	
-			Map<String, ArrayList<String>> requestParams = JeMafHttpUtils.getParameters(request, requestPostData);
+			String requestContentType = JeMafHttpUtils.getContentType(request);
+
+			Map<String,ArrayList<String>> requestParams = new HashMap<>();
+
+			String query = request.getQueryString();
+			if( query.indexOf('?') != -1 ){
+				LOGGER.trace("fix remoteService sub-query '?':" + query);
+				query = query.replace('?','&');
+				requestParams = JeMafHttpUtils.fixParameters( query );
+			}
+			else if (query.indexOf("%3F") != -1 ){
+				LOGGER.trace("fix remoteService sub-query '%3F':" + query);
+				query = query.replace("%3F","&");
+				requestParams = JeMafHttpUtils.fixParameters( query );
+			}
+			else {
+				requestParams = JeMafHttpUtils.getParameters(request, requestPostData);
+				String fixKey = null, fixValue = null;
+				for( Map.Entry<String,ArrayList<String>> entry : requestParams.entrySet() ){
+					if( entry.getKey().equals("remoteService")){
+						ArrayList<String> arr = entry.getValue();
+						if( arr == null || arr.isEmpty() ){
+							continue;
+						}
+						String remote = arr.get(0);
+						if (remote.contains("?")){
+							int index = remote.indexOf('?');
+							String fixed = remote.substring(0,index+1);
+							LOGGER.trace("split remoteService '?':" + fixed);
+							arr.set(0,fixed);
+
+							int index2 = remote.indexOf('=',index);
+							fixKey = remote.substring(index+1,index2);
+							fixValue = remote.substring(index2+1);
+						}
+					}
+				}
+				if( fixKey != null && fixValue != null ){
+					LOGGER.trace("split remoteService '?':" + fixKey + "="+fixValue);
+					ArrayList<String> array = new ArrayList<>();
+					array.add(fixValue);
+					requestParams.put(fixKey,array);
+				}
+			}
 
 			Iterator<Entry<String, ArrayList<String>>> it = requestParams.entrySet().iterator();
 			while (it.hasNext()) {
-				Map.Entry<String, ArrayList<String>> pairs = (Map.Entry<String, ArrayList<String>>)it.next();
+				Map.Entry<String, ArrayList<String>> pairs = it.next();
 				String key = pairs.getKey();
 				String value = null;
 				ArrayList<String> values = pairs.getValue();
@@ -343,7 +382,7 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 							value = value.replace(oldRoot, newRoot);
 							LOGGER.trace("sld_body value updated method 2: " + value);
 						}
-					} 
+					}
 
 					sb.append(key);
 					sb.append("=");
@@ -379,9 +418,9 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 				}
 			}
 
-			if ( remoteService == null || remoteService.trim().isEmpty() ||  
-				 requestType == null   || requestType.trim().isEmpty() || 
-				 service == null       || service.trim().isEmpty() || 
+			if ( remoteService == null || remoteService.trim().isEmpty() ||
+				 requestType == null   || requestType.trim().isEmpty() ||
+				 service == null       || service.trim().isEmpty() ||
 				 version == null       || version.trim().isEmpty() ) {
 				msgKey = WMSPROXY_MANDATORY_PARAMS;
 			}
@@ -391,7 +430,7 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 				service = service.trim();
 				version = version.trim();
 
-				if	( !requestType.equalsIgnoreCase("GETMAP") &&  
+				if	( !requestType.equalsIgnoreCase("GETMAP") &&
 					  !requestType.equalsIgnoreCase("GETLEGENDGRAPHIC") &&
 					  !requestType.equalsIgnoreCase("GETCAPABILITIES") &&
 					  !requestType.equalsIgnoreCase("GETFEATUREINFO") &&
@@ -431,18 +470,18 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 								requestType = "GETLEGENDGRAPHIC";
 							}
 							else {
-								// POST XML Data does not have any of the standard 
+								// POST XML Data does not have any of the standard
 								throw new InvalidXmlRequestException();
 							}
 						}
 					}
 
 		    		// If -Dhttp.proxyHost and/or -Dhttps.proxyHost are defined in the JVM, it will take precedence
-					wmsResponse = JeMafHttpUtils.callSyncWebServices( new URL(newRemoteServiceToBeRequest), 
-																		requestPostData, 
-																		requestMethod, 
-																		requestContentType, 
-																		getPayload() * JeMafIoUtils.BYTES_PER_KB, 
+					wmsResponse = JeMafHttpUtils.callSyncWebServices( new URL(newRemoteServiceToBeRequest),
+																		requestPostData,
+																		requestMethod,
+																		requestContentType,
+																		getPayload() * JeMafIoUtils.BYTES_PER_KB,
 																		getTimeout() );
 
 					if ( LOGGER.isInfoEnabled() ) {
@@ -455,7 +494,7 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 					else {
 						requestType = requestType.toUpperCase();
 
-						if ( wmsResponse.getContentType().toLowerCase().indexOf("text/xml") != -1 ||  
+						if ( wmsResponse.getContentType().toLowerCase().indexOf("text/xml") != -1 ||
 								wmsResponse.getContentType().toLowerCase().indexOf("image/svg\\+xml") != -1 ||
 								wmsResponse.getContentType().toLowerCase().indexOf("image/svg+xml") != -1 ||
 								wmsResponse.getContentType().toLowerCase().indexOf("application/vnd.ogc") != -1 ){
@@ -466,7 +505,7 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 						}
 						else if ( wmsResponse.getContentType().toLowerCase().indexOf("image/png") != -1 ) {
 							//The first eight bytes of all PNG files are 89 50 4e 47 0d 0a 1a 0ah.
-							if ( ! (JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[0]) == 0x89 && 
+							if ( ! (JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[0]) == 0x89 &&
 									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[1]) == 0x50 &&
 									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[2]) == 0x4E &&
 									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[3]) == 0x47 &&
@@ -480,14 +519,14 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 						else if ( wmsResponse.getContentType().toLowerCase().indexOf("image/gif") != -1 ) {
 							// 47 49 46 38 37 61h ("GIF87a") or 47 49 46 38 39 61h ("GIF89a").
 							// signaturev89a = \\x47\\x49\\x46\\x38\\x39\\x61
-							if ( ! (JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[0]) == 0x47 && 
+							if ( ! (JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[0]) == 0x47 &&
 									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[1]) == 0x49 &&
 									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[2]) == 0x46 &&
 									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[3]) == 0x38 &&
 									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[4]) == 0x37 &&
-									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[5]) == 0x61 )  || 
+									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[5]) == 0x61 )  ||
 
-									! (JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[0]) == 0x47 && 
+									! (JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[0]) == 0x47 &&
 									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[1]) == 0x49 &&
 									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[2]) == 0x46 &&
 									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[3]) == 0x38 &&
@@ -503,12 +542,12 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 								wmsResponse.getContentType().toLowerCase().indexOf("image/jfi")  != -1   ||
 								wmsResponse.getContentType().toLowerCase().indexOf("image/jif")  != -1   ||
 								wmsResponse.getContentType().toLowerCase().indexOf("image/spiff")  != -1  ) {
-							//The first three bytes are ff d8 ff h 
-							if ( ! (JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[0]) == 0xFF && 
+							//The first three bytes are ff d8 ff h
+							if ( ! (JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[0]) == 0xFF &&
 									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[1]) == 0xD8 &&
-									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[2]) == 0xFF)    || 
+									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[2]) == 0xFF)    ||
 
-									! (JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[0]) == 0xFF && 
+									! (JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[0]) == 0xFF &&
 									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[1]) == 0xE0 &&
 									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[2]) == 0xFF)) {
 								throw new InvalidResponseException();
@@ -517,12 +556,12 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 						else if ( wmsResponse.getContentType().toLowerCase().indexOf("image/tiff")  != -1  ) {
 							// The first four bytes of a big-endian TIFF files are 4d 4d 00 2a h and
 							// 49 49 2a 00h for little-endian TIFF files.
-							if ( ! (JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[0]) == 0x4D && 
+							if ( ! (JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[0]) == 0x4D &&
 									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[1]) == 0x4D &&
 									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[2]) == 0x00 &&
-									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[3]) == 0x2A )    || 
+									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[3]) == 0x2A )    ||
 
-									! (JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[0]) == 0x49 && 
+									! (JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[0]) == 0x49 &&
 									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[1]) == 0x49 &&
 									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[2]) == 0x2A &&
 									JeMafUtils.unsignedToBytes(wmsResponse.getRawResponseData()[3]) == 0x00 )) {
@@ -543,7 +582,7 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 		} catch (InvalidXmlRequestException e) {
 			msgKey = WMSPROXY_INVALID_POST_XML;
 		} catch (TimeoutException e) {
-			msgKey = WMSPROXY_TIMEOUT;	
+			msgKey = WMSPROXY_TIMEOUT;
 			params = new Object[] { remoteService, getTimeout().toString()  };
 		} catch (MalformedURLException e) {
 			msgKey = WMSPROXY_MALFORMED_URL;
@@ -567,7 +606,7 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 					"<ServiceException>" + messageSource.getMessage(msgKey,  params, locale)  + "</ServiceException>" +
 				 "</ServiceExceptionReport>").getBytes() );
 		}
-		
+
 		return wmsResponse;
 	}
 

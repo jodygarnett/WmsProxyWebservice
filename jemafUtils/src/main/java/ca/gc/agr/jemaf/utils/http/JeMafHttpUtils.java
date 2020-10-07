@@ -162,6 +162,35 @@ public class JeMafHttpUtils {
         return request.getContentType();
     }
 
+
+    public static Map<String, ArrayList<String>> fixParameters(String query){
+        query = query.replace('?','&');
+        Map<String,ArrayList<String>> params = new HashMap<>();
+        String[] split = query.split("&");
+        for( String entry : split ){
+            String key, value;
+            int index = entry.indexOf('=');
+            if( index == -1 ){
+                key = entry;
+                value = null;
+                params.put(key,null);
+            }
+            else {
+                key = entry.substring(0,index);
+                value = entry.substring(index+1);
+                if( params.containsKey(key)){
+                    ArrayList arr = params.get(key);
+                    arr.add(JeMafUtils.URLDecoder(value));
+                }
+                else {
+                    ArrayList arr = new ArrayList<String>();
+                    arr.add(JeMafUtils.URLDecoder(value));
+                    params.put(key, arr);
+                }
+            }
+        }
+        return params;
+    }
     /**
      * Read all parameters even for a multi/form and form encoded url
      * 
