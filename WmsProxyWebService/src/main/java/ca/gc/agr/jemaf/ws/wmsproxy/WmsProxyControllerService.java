@@ -307,17 +307,21 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 			Map<String,ArrayList<String>> requestParams = new HashMap<>();
 
 			String query = request.getQueryString();
-			if( query.indexOf('?') != -1 ){
-				LOGGER.trace("fix remoteService sub-query '?':" + query);
-				query = query.replace('?','&');
-				requestParams = JeMafHttpUtils.fixParameters( query );
-			}
-			else if (query.indexOf("%3F") != -1 ){
-				LOGGER.trace("fix remoteService sub-query '%3F':" + query);
-				query = query.replace("%3F","&");
-				requestParams = JeMafHttpUtils.fixParameters( query );
+			if( query.startsWith("remoteService=")){
+				// this is wonderful
 			}
 			else {
+				query = "remoteService="+query;
+			}
+
+			if( query.indexOf('?') != -1 ) {
+				LOGGER.trace("fix remoteService sub-query '?':" + query);
+				query = query.replace('?', '&');
+			}
+			requestParams = JeMafHttpUtils.fixParameters( query );
+
+			// this is the initial logic to parse query, requires remoteService=
+			if( requestPostData != null && !requestPostData.isEmpty() ){
 				requestParams = JeMafHttpUtils.getParameters(request, requestPostData);
 				String fixKey = null, fixValue = null;
 				for( Map.Entry<String,ArrayList<String>> entry : requestParams.entrySet() ){
@@ -346,6 +350,7 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 					requestParams.put(fixKey,array);
 				}
 			}
+			// continue
 
 			Iterator<Entry<String, ArrayList<String>>> it = requestParams.entrySet().iterator();
 			while (it.hasNext()) {
