@@ -2,11 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>ca.gc.agr</groupId>
+  
+  <parent>
+    <groupId>ca.gc.agr</groupId>
+    <artifactId>parent</artifactId>
+    <version>2.0.0</version>
+  </parent>
+  
   <artifactId>wmsproxy</artifactId>
-  <name>wmsproxy</name>
   <packaging>war</packaging>
-  <version>2.0.0</version>
+  
+  <name>WMS Proxy Web Service</name>
+  
+  
   <description>WMS PROXY RESTful Web Service </description>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -14,7 +22,13 @@
     <jemaf.version>2.0.0</jemaf.version>
   </properties>
   <dependencies>
-  
+
+    <dependency>
+      <groupId>org.tuckey</groupId>
+      <artifactId>urlrewritefilter</artifactId>
+      <version>4.0.3</version>
+    </dependency>
+
     <!-- jeMaf Utils : It is a reusable components -->
     <dependency>
       <groupId>ca.gc.agr.jemaf</groupId>
@@ -140,6 +154,9 @@
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <version>9.4.32.v20200930</version>
+        <configuration>
+          <scanIntervalSeconds>0</scanIntervalSeconds>
+        </configuration>
       </plugin>
     </plugins>
   </build>

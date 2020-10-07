@@ -78,7 +78,26 @@ The project makes use of `jemafutils`.
    mvn jetty:run-war
    ```
    
-## Troubleshooting
+## Filters
+
+The `web.xml` contains several apache specific filters:
+
+* url rewrite filter: `http` to `remoteService=http`
+* CORS filter
+
+It is a good practice to manage CORS filter in Tomcat `$CATALINA_BASE/conf/web.xml`so  policy is strictly under control of the system administrator.
+
+## Configuration
+
+The `emaf_config` property is used to supply a configuration file:
+
+```
+-Demaf_config=configFiles/emaf.properties
+```
+
+This is read by `GlobalEnvironmentPropertiesController`, and does not appear to be used.
+
+## Logging
 
 Logging is provided by log4j, see `WEB-INF/classes/log4j.properties`. To debug proxy activity a level of `TRACE` is recommended:
 
