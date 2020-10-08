@@ -573,6 +573,13 @@ public class WmsProxyControllerService implements ApplicationContextAware, Initi
 								throw new InvalidResponseException();
 							}
 						}
+						else if ( (wmsResponse.getContentType().toLowerCase().indexOf("text/plain")  != -1)  ||
+								(wmsResponse.getContentType().toLowerCase().indexOf("text/html") != -1)
+						         ) {
+							if( !requestType.equalsIgnoreCase("GETFEATUREINFO")){
+								throw new InvalidResponseException(); // only text/plain from GetFeatureInfo
+							}
+						}
 						else {
 							throw new InvalidResponseException();
 						}
